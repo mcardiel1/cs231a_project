@@ -31,6 +31,8 @@ def sobel_filters(img):
     
     return (G, theta)
 
+
+#none max suppresison
 def non_max_suppression(img, D):
     M, N = img.shape
     Z = np.zeros((M,N), dtype=np.int32)
@@ -72,7 +74,7 @@ def non_max_suppression(img, D):
     return Z
 
 
-
+#threshold
 def threshold(img, lowThresholdRatio=0.05, highThresholdRatio=0.09):
     
     highThreshold = img.max() * highThresholdRatio;
@@ -94,6 +96,8 @@ def threshold(img, lowThresholdRatio=0.05, highThresholdRatio=0.09):
     
     return (res, weak, strong)
 
+
+#hysteresis
 def hysteresis(img, weak, strong=255):
     M, N = img.shape  
     for i in range(1, M-1):
@@ -110,16 +114,28 @@ def hysteresis(img, weak, strong=255):
                     pass
     return img
 
-img = io.imread('Letter_A.png', as_gray = True)
-
-blurred = ndimage.gaussian_filter(img, sigma=1)
-sobel, theta = sobel_filters(blurred)
-non_max_sup = non_max_suppression(sobel,theta)
-res , weak, strong = np.array(threshold(non_max_sup))
-
-img1 = hysteresis(res,weak)
 
 
-plt.imshow(img1,cmap="gray")
+if __name__ == '__main__':
 
-plt.show()
+	img = io.imread('Letter_A.png', as_gray = True)
+	#after guassian filter
+	blurred = ndimage.gaussian_filter(img, sigma=1)
+
+	#gradient
+	sobel, theta = sobel_filters(blurred)
+
+	#non max suppression
+	non_max_sup = non_max_suppression(sobel,theta)
+
+	#threshold
+	res , weak, strong = threshold(non_max_sup)
+
+
+	#htsteresis
+	img1 = hysteresis(res,weak)
+
+	#show image
+	plt.imshow(img1,cmap="gray")
+
+	plt.show()
