@@ -10,6 +10,9 @@ from PIL import Image as im
 """ 
 The purpose of this file is to convert all of the data from greyscale images, 
 to binary images where 255 represents an edge detected by the canny edge detector.
+
+We obtained most of source code for this algorithm from https://www.programmersought.com/article/1750536116/
+"Canny edge detection method in python - computer vision"
 """
 
 train_read_path = './archive/sign_mnist_train.csv'
